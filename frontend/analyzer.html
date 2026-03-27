@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UPI Scam Shield – Analyzer</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="siteHeader">
+      <div class="wrap nav">
+        <a class="brand brandLink" href="/">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="brandText">UPI Scam Shield</div>
+        </a>
+        <div class="navActions">
+          <a class="navLink" href="/">Home</a>
+          <button class="btn" type="button" data-theme-toggle>Dark Mode</button>
+          <a class="btn btnPrimary" href="/analyzer?demo=1">Run Demo Tour</a>
+          <a class="btn" href="/analyzer?demo=learn" title="Adaptive learning demo">Learning demo</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="wrap">
+          <div class="analyzerHeader">
+            <h1 class="sectionTitle analyzerTitle">Scam Analyzer</h1>
+            <div class="analyzerHint">Paste a message or upload a screenshot. Results show risk + evidence.</div>
+          </div>
+
+          <section class="card cardWide contextCard">
+            <h3 class="cardTitle">Your situation (personalized risk)</h3>
+            <p class="hint">Same words can be riskier if the sender or payment context feels off.</p>
+            <div class="contextRow">
+              <label class="contextField">
+                <span class="label">Sender</span>
+                <select id="senderTypeSel" class="contextSelect">
+                  <option value="unknown">Unknown / not sure</option>
+                  <option value="known">Known contact</option>
+                </select>
+              </label>
+              <label class="contextField">
+                <span class="label">Payment context</span>
+                <select id="transactionContextSel" class="contextSelect">
+                  <option value="expected">Expected (you were waiting for this)</option>
+                  <option value="unexpected">Unexpected payment request</option>
+                </select>
+              </label>
+              <label class="contextField">
+                <span class="label">User profile</span>
+                <select id="userTypeSel" class="contextSelect">
+                  <option value="general">General</option>
+                  <option value="elderly">Elderly / need extra caution</option>
+                  <option value="new_user">New to UPI</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <div class="analyzerGrid">
+            <section class="card">
+              <h3 class="cardTitle">Analyze Text</h3>
+              <textarea id="textInput" placeholder="Paste message here..."></textarea>
+              <div class="row">
+                <button id="analyzeBtn" class="btn btnPrimary">Analyze</button>
+                <button id="fillScamBtn" class="btn">Try Scam Example</button>
+                <button id="fillNormalBtn" class="btn">Try Normal Example</button>
+                <button id="learningDemoBtn" type="button" class="btn btnPrimary">Learning demo</button>
+              </div>
+            </section>
+
+            <section class="card">
+              <h3 class="cardTitle">Analyze Screenshot (OCR)</h3>
+              <label class="label" for="fileInput">Upload screenshot image</label>
+              <input id="fileInput" type="file" accept="image/*" />
+            <div id="filePreviewWrap" class="previewWrap hidden">
+              <img id="filePreview" class="previewImg" alt="Selected screenshot preview" />
+            </div>
+              <div class="row">
+                <button id="analyzeImgBtn" class="btn btnPrimary">Analyze Image</button>
+              </div>
+              <p class="hint">Tip: upload a WhatsApp/SMS screenshot. OCR runs on the server via Tesseract.</p>
+            </section>
+          </div>
+
+          <section class="card cardWide">
+            <h3 class="cardTitle">Result</h3>
+            <div id="status" class="status hidden"></div>
+
+            <div id="emptyState" class="emptyState">
+              <div class="emptyIcon" aria-hidden="true">🔎</div>
+              <div class="emptyTitle">Start your analysis</div>
+              <div class="emptyBody">Paste a message or upload a screenshot to detect scam signals.</div>
+            </div>
+
+            <div id="result" class="result hidden">
+              <div class="row resultTopRow">
+                <label class="toggle">
+                  <input id="verboseToggle" type="checkbox" />
+                  <span>Show evidence</span>
+                  <span class="toggleHint">(rule hits + AI status)</span>
+                </label>
+                <button id="copyReportBtn" class="btn">Copy report</button>
+              </div>
+
+              <div id="statusBanner" class="statusBanner">
+                <div id="statusBannerTitle" class="statusBannerTitle">—</div>
+                <div id="statusBannerSub" class="statusBannerSub">—</div>
+              </div>
+
+              <div id="smartExplanation" class="panel smartExplain hidden">
+                <div class="smartExplainTop">
+                  <div id="exHeadline" class="exHeadline">—</div>
+                  <div id="exVerdict" class="exVerdict">—</div>
+                </div>
+                <div id="exDangerWrap" class="dangerWrap hidden">
+                  <div class="dangerTitle">👉 Why this is dangerous for you</div>
+                  <div id="exDanger" class="dangerBody">—</div>
+                </div>
+                <div id="whyYouWrap" class="whyYouWrap hidden">
+                  <div class="dangerTitle">🧍 Why this is risky for you</div>
+                  <div id="whyYouBody" class="dangerBody">—</div>
+                </div>
+                <div id="exSummary" class="exSummary">—</div>
+                <div id="learningBadgeWrap" class="learningBadgeWrap hidden">
+                  <div class="learningBadgeRow">
+                    <span class="learningBadge">🧠 Learning</span>
+                    <span id="learningNote" class="learningNote"></span>
+                  </div>
+                  <div id="learningPhrases" class="learningPhrases" aria-label="Matched learned phrases"></div>
+                  <div class="learningBoostRow">
+                    <span class="label">Adaptive boost</span>
+                    <div class="learningBar" aria-hidden="true">
+                      <div id="learningBarFill" class="learningBarFill"></div>
+                    </div>
+                    <span id="learningBoostVal" class="learningBoostVal">0/25</span>
+                  </div>
+                </div>
+                <div id="exStoryWrap" class="exStoryWrap hidden">
+                  <div class="storyBlock">
+                    <div class="storyLabel">🎯 What the scammer wants you to do</div>
+                    <div id="exScammerWants" class="storyBody">—</div>
+                  </div>
+                  <div class="storyBlock">
+                    <div class="storyLabel">⚡ What actually happens if you act</div>
+                    <div id="exIfYouAct" class="storyBody">—</div>
+                  </div>
+                  <div class="storyBlock">
+                    <div class="storyLabel">🧠 Why people get fooled by this</div>
+                    <div id="exWhyFooled" class="storyBody">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="contextInsight" class="panel contextInsight hidden">
+                <div class="panelTitle">📍 Intent &amp; context</div>
+                <div id="contextInsightBody" class="muted">—</div>
+              </div>
+
+              <div id="explainSections" class="grid hidden">
+                <div class="panel">
+                  <div class="panelTitle">📌 What You Should Do</div>
+                  <ul id="exSteps"></ul>
+                </div>
+                <div class="panel">
+                  <div class="panelTitle">🧠 Detailed Analysis</div>
+                  <ul id="exDetailed"></ul>
+                </div>
+                <div class="panel">
+                  <div class="panelTitle">🧩 Common Trick Used</div>
+                  <ul id="exTrick"></ul>
+                </div>
+                <div class="panel goldenBox">
+                  <div class="panelTitle">🔥 Golden Rule</div>
+                  <div id="exGolden" class="goldenText">—</div>
+                </div>
+              </div>
+
+              <div id="decisionPanel" class="panel decisionPanel">
+                <div class="panelTitle">Final Decision</div>
+                <div class="decisionGrid">
+                  <div class="decisionItem">
+                    <div class="label">Risk</div>
+                    <div id="finalRisk" class="decisionValue">—</div>
+                  </div>
+                  <div class="decisionItem">
+                    <div class="label">Scam verdict</div>
+                    <div id="finalVerdict" class="decisionValue">—</div>
+                  </div>
+                  <div class="decisionItem">
+                    <div class="label">Confidence</div>
+                    <div id="finalConfidence" class="decisionValue">—</div>
+                  </div>
+                  <div class="decisionItem">
+                    <div class="label">Model used</div>
+                    <div id="finalModel" class="decisionValue">—</div>
+                  </div>
+                </div>
+                <div class="confidenceRow">
+                  <div class="label">Confidence</div>
+                  <div class="confidenceBar" aria-hidden="true">
+                    <div id="confidenceFill" class="confidenceFill"></div>
+                  </div>
+                  <div id="confidenceText" class="confidenceText">—</div>
+                </div>
+                <div id="personalizedRiskLine" class="muted personalizedRiskLine hidden"></div>
+                <div id="confidenceNote" class="muted confidenceNote hidden"></div>
+              </div>
+
+              <div id="summaryBox" class="panel summaryBox hidden">
+                <div class="panelTitle">🧠 Quick Summary</div>
+                <div id="summaryText" class="summaryText">—</div>
+              </div>
+
+              <div class="badges">
+                <span id="riskBadge" class="badge">RISK</span>
+                <span id="scamBadge" class="badge">SCAM</span>
+                <span id="confidenceBadge" class="badge">CONFIDENCE</span>
+                <span id="modelBadge" class="badge">MODEL</span>
+              </div>
+
+              <div class="grid">
+                <div class="panel">
+                  <div class="panelTitle">Reasons</div>
+                  <ul id="reasons"></ul>
+                </div>
+                <div class="panel">
+                  <div class="panelTitle">Suggested Actions</div>
+                  <ul id="actions"></ul>
+                </div>
+              </div>
+
+              <div id="extractedWrap" class="panel extractedPanel hidden">
+                <div class="panelTitle">📄 Extracted Text (OCR)</div>
+                <p class="hint toggleHint">Lines are color-coded; hover a bubble for why it’s flagged.</p>
+                <div id="ocrChatWrap" class="ocrChatWrap hidden"></div>
+                <pre id="extractedText" class="extractedText"></pre>
+              </div>
+
+              <div id="evidencePanel" class="panel">
+                <div class="panelTitle">Evidence</div>
+                <div class="evidence">
+                  <div>
+                    <div class="label">Rule hits</div>
+                    <div class="muted ruleScoreLine">
+                      Rule score: <b id="ruleScore">—</b>/100
+                    </div>
+                    <ul id="ruleHits"></ul>
+                  </div>
+                  <div>
+                    <div class="label">AI status</div>
+                    <div id="llmStatus" class="muted"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="panelTitle">Feedback</div>
+                <p class="muted">
+                  If this result is wrong, mark it below. Feedback updates a <strong>learned phrase library</strong> when the
+                  model missed a scam—so the system improves over time (no ML retraining required).
+                </p>
+                <div class="row">
+                  <button id="fbScamBtn" class="btn btnDanger">Mark as Scam</button>
+                  <button id="fbNotScamBtn" class="btn btnSuccess">Mark as Not Scam</button>
+                </div>
+                <div class="row">
+                  <div id="fbStatus" class="muted"></div>
+                </div>
+                <div class="row">
+                  <div id="fbStats" class="muted"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="siteFooter">
+      <div class="wrap footerInner">
+        <div class="footerMeta">Backend: FastAPI • OCR: Tesseract • AI: OpenRouter (optional)</div>
+        <div class="footerMeta">© 2026 UPI Scam Shield</div>
+      </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UPI Scam Shield</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="siteHeader">
+      <div class="wrap nav">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="brandText">UPI Scam Shield</div>
+        </div>
+        <div class="navActions">
+          <a class="navLink" href="#how">How it works</a>
+          <a class="navLink" href="#features">Features</a>
+          <button class="btn" type="button" data-theme-toggle>Dark Mode</button>
+          <a class="btn btnPrimary" href="/analyzer">Open Analyzer</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Landing / Intro -->
+    <main>
+      <section id="landing" class="hero">
+        <div class="wrap heroInner">
+          <div class="heroIcon" aria-hidden="true">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none">
+              <path d="M7 3h7l3 3v15a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M14 3v4a2 2 0 0 0 2 2h4" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M8 12h8M8 16h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h1 class="heroTitle">Detect UPI scams in seconds.</h1>
+          <p class="heroSub">
+            Paste a message or upload a screenshot. Get a clear <b>risk level</b>, a <b>scam verdict</b>, and <b>next actions</b>.
+          </p>
+          <div class="heroCtas">
+            <a class="btn btnPrimary" href="/analyzer?demo=1">Run 60s Demo Tour</a>
+            <a class="btn btnGhost" href="/analyzer">Get Started</a>
+          </div>
+          <div class="heroHint">Works even if AI is unavailable (rules-only mode).</div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="wrap">
+          <h2 class="sectionTitle">Why choose UPI Scam Shield?</h2>
+          <div class="featureGrid">
+            <div class="featureCard">
+              <div class="featureIcon" aria-hidden="true">24/7</div>
+              <div class="featureTitle">Instant analysis</div>
+              <div class="featureBody">Fast, deterministic rule engine with consistent scoring for live demos.</div>
+            </div>
+            <div class="featureCard">
+              <div class="featureIcon" aria-hidden="true">OCR</div>
+              <div class="featureTitle">Screenshot ready</div>
+              <div class="featureBody">Analyze WhatsApp/SMS screenshots using Tesseract OCR on the server.</div>
+            </div>
+            <div class="featureCard">
+              <div class="featureIcon" aria-hidden="true">AI</div>
+              <div class="featureTitle">Hybrid engine</div>
+              <div class="featureBody">Optional OpenRouter LLM adds generalization; rules remain primary for safety.</div>
+            </div>
+            <div class="featureCard">
+              <div class="featureIcon" aria-hidden="true">Why</div>
+              <div class="featureTitle">Explainable output</div>
+              <div class="featureBody">Evidence panel shows rule hits + reasons + suggested actions for users.</div>
+            </div>
+            <div class="featureCard">
+              <div class="featureIcon" aria-hidden="true">IN</div>
+              <div class="featureTitle">India-first patterns</div>
+              <div class="featureBody">Collect-to-receive trick, OTP/UPI PIN asks, remote access apps, KYC/refund baits.</div>
+            </div>
+            <div class="featureCard">
+              <div class="featureIcon" aria-hidden="true">FB</div>
+              <div class="featureTitle">Feedback loop</div>
+              <div class="featureBody">Mark results wrong/right to store anonymous feedback locally (SQLite).</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="section sectionMuted">
+        <div class="wrap">
+          <h2 class="sectionTitle">How it works</h2>
+          <div class="stepsWrap">
+            <div class="stepCard">
+              <div class="stepNum">1</div>
+              <div>
+                <div class="stepTitle">Paste text or upload screenshot</div>
+                <div class="stepBody">Input agent takes your message or image file.</div>
+              </div>
+            </div>
+            <div class="stepCard">
+              <div class="stepNum">2</div>
+              <div>
+                <div class="stepTitle">OCR (images only)</div>
+                <div class="stepBody">Tesseract extracts readable text from WhatsApp/SMS screenshots.</div>
+              </div>
+            </div>
+            <div class="stepCard">
+              <div class="stepNum">3</div>
+              <div>
+                <div class="stepTitle">Hybrid detection</div>
+                <div class="stepBody">Rules flag scam signals; optional AI adds generalization with graceful fallback.</div>
+              </div>
+            </div>
+            <div class="stepCard">
+              <div class="stepNum">4</div>
+              <div>
+                <div class="stepTitle">Decision + actions</div>
+                <div class="stepBody">Final risk score, reasons, and suggested next steps—ready for support triage.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="siteFooter">
+      <div class="wrap footerInner">
+        <div class="footerBrand">
+          <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div class="brandText">UPI Scam Shield</div>
+          </div>
+          <div class="footerMeta">Backend: FastAPI • OCR: Tesseract • AI: OpenRouter (optional)</div>
+        </div>
+        <div class="footerMeta">© 2026 UPI Scam Shield</div>
+      </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
+
