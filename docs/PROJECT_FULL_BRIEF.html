@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UPI Scam Shield — Project Brief (Print to PDF)</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --accent: #6d5bd0;
+      --bg: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 28px 48px;
+      font-size: 11.5pt;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-top: 1.75rem;
+      color: var(--accent);
+    }
+    h3 { font-size: 1.05rem; margin-top: 1.25rem; }
+    p { margin: 0.6rem 0; color: var(--ink); }
+    .muted { color: var(--muted); font-size: 0.95rem; }
+    pre, .diagram {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      font-family: "Consolas", "Cascadia Code", monospace;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 10.5pt;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f1f5f9; font-weight: 700; }
+    ul { margin: 0.4rem 0 0.6rem 1.2rem; }
+    li { margin: 0.25rem 0; }
+    .print-hint {
+      background: linear-gradient(135deg, rgba(109,91,208,0.12), rgba(124,58,237,0.08));
+      border: 1px solid rgba(109,91,208,0.35);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 20px 0;
+      font-weight: 600;
+    }
+    @media print {
+      body { padding: 12mm 14mm; font-size: 10.5pt; max-width: 100%; }
+      h1 { font-size: 1.5rem; }
+      h2 { page-break-after: avoid; }
+      pre, .diagram, table { page-break-inside: avoid; }
+      .print-hint { border: 1px solid #ccc; background: #f9f9f9; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <p class="muted" style="margin-bottom:8px;">UPI Scam Shield — Documentation for reports &amp; 6–7 slide PPT</p>
+  <h1>UPI Scam Shield — Complete Project Brief</h1>
+
+  <div class="print-hint">
+    <strong>PDF banane ke liye:</strong> Chrome / Edge mein is page ko kholo → <kbd>Ctrl+P</kbd> → Destination: <strong>Save as PDF</strong> → Save.
+  </div>
+
+  <h2>1. One-line pitch</h2>
+  <p><strong>UPI Scam Shield</strong> ek <strong>hybrid AI + rule-based</strong> system hai jo <strong>UPI/payment scams</strong> ko <strong>text</strong> ya <strong>screenshots (OCR)</strong> se detect karta hai—<strong>risk level</strong>, <strong>scam verdict</strong>, <strong>reasons</strong>, <strong>actions</strong> deta hai; optional <strong>LLM</strong> aur <strong>adaptive learning</strong> (SQLite + user feedback).</p>
+  <p class="muted">Use case: Hackathon / enterprise demo—consumer safety + support triage.</p>
+
+  <h2>2. Problem &amp; impact</h2>
+  <table>
+    <tr><th>Problem</th><th>Impact</th></tr>
+    <tr><td>UPI/SMS/WhatsApp scams (OTP, fake links, collect trick, remote access)</td><td>Financial loss, account takeover</td></tr>
+    <tr><td>Users ko quickly safety judge karna mushkil</td><td>Galat trust → payment / leak</td></tr>
+    <tr><td>Support teams ko consistent triage</td><td>Faster resolution, fewer false escalations</td></tr>
+  </table>
+
+  <h2>3. High-level architecture</h2>
+  <div class="diagram">User (Web UI)
+    │
+    ▼
+FastAPI (backend/app/main.py)
+    │
+    ├── Text path ─────────────────────────────────────┐
+    │                                                   │
+    └── Image path ──► OCR (Tesseract) ──► text ──────┤
+                                                        │
+                                                        ▼
+                                            Pipeline (pipeline.py)
+
+    ┌───────────────────────────────────────────────────────────┐
+    │ • Rules engine (deterministic patterns, severity)           │
+    │ • Intent layer (intent + risk boost)                       │
+    │ • Context layer (sender / transaction / user type)         │
+    │ • Adaptive phrases (SQLite — feedback se learned)          │
+    │ • LLM (OpenRouter) — optional intent + explanation enrich    │
+    │ • Risk scoring → LOW / MEDIUM / HIGH                       │
+    │ • Decision merge (rules + AI)                              │
+    │ • Explanation generator                                     │
+    └───────────────────────────────────────────────────────────┘
+                                                        │
+                                                        ▼
+    JSON: risk, is_scam, confidence, reasons, actions, explanation,
+          intent, personalization, adaptive, analysis_log_id, …</div>
+  <p><strong>Principles:</strong> Rules-first (no API key = rules-only); hybrid merge; verbose mode for evidence.</p>
+
+  <h2>4. Component map (backend)</h2>
+  <table>
+    <tr><th>Module</th><th>Role</th></tr>
+    <tr><td><code>main.py</code></td><td>Routes, static files, CORS, DB init</td></tr>
+    <tr><td><code>pipeline.py</code></td><td>Full analyze orchestration</td></tr>
+    <tr><td><code>agents/rules.py</code>, <code>risk.py</code>, <code>decision.py</code></td><td>Patterns, score, merge</td></tr>
+    <tr><td><code>intent_layer.py</code>, <code>context_layer.py</code></td><td>Intent + user context</td></tr>
+    <tr><td><code>llm.py</code></td><td>OpenRouter</td></tr>
+    <tr><td><code>explanation_generator.py</code></td><td>Rich explanations</td></tr>
+    <tr><td><code>ocr.py</code>, <code>ocr_line_hints.py</code></td><td>Image → text, UI hints</td></tr>
+    <tr><td><code>feedback_db.py</code></td><td>SQLite feedback + adaptive phrases</td></tr>
+    <tr><td><code>schemas.py</code>, <code>settings.py</code></td><td>Models + config</td></tr>
+  </table>
+
+  <h2>5. Tech stack</h2>
+  <table>
+    <tr><th>Layer</th><th>Tech</th></tr>
+    <tr><td>API</td><td>FastAPI</td></tr>
+    <tr><td>Runtime</td><td>Python 3.10+</td></tr>
+    <tr><td>OCR</td><td>Tesseract</td></tr>
+    <tr><td>AI (optional)</td><td>OpenRouter (multi-model fallback)</td></tr>
+    <tr><td>Storage</td><td>SQLite</td></tr>
+    <tr><td>Frontend</td><td>Static HTML/CSS/JS</td></tr>
+  </table>
+
+  <h2>6. API summary</h2>
+  <table>
+    <tr><th>Endpoint</th><th>Purpose</th></tr>
+    <tr><td><code>GET /</code>, <code>GET /analyzer</code></td><td>Landing + analyzer UI</td></tr>
+    <tr><td><code>GET /analyze</code>, <code>GET /analyze-verbose</code></td><td>Text analysis (+ evidence)</td></tr>
+    <tr><td><code>POST /analyze-image</code>, <code>…-verbose</code></td><td>Image → OCR → analyze</td></tr>
+    <tr><td><code>POST /feedback</code></td><td>User labels; optional <code>analysis_log_id</code></td></tr>
+    <tr><td><code>GET /feedback-stats</code></td><td>Stats</td></tr>
+  </table>
+  <p><strong>Context params:</strong> <code>sender_type</code>, <code>transaction_context</code>, <code>user_type</code> (see README).</p>
+
+  <h2>7. Adaptive learning</h2>
+  <ul>
+    <li><code>analysis_log_id</code> se feedback link hota hai.</li>
+    <li>User SCAM/NOT_SCAM mark karta hai—misclassification par phrases learn ho sakte hain.</li>
+    <li>Baad mein <strong>adaptive boost</strong> + UI mein Learning badge / boost bar.</li>
+    <li>Demo: <code>/analyzer?demo=learn</code> ya Learning demo button.</li>
+  </ul>
+
+  <h2>8. Configuration</h2>
+  <p><code>backend/.env</code> ← <code>env.example</code>: <code>OPENROUTER_API_KEY</code>, <code>OPENROUTER_MODELS</code>, intent/enrich models, <code>TESSERACT_CMD</code>, CORS, upload limits.</p>
+
+  <h2>9. Suggested 6–7 slides (PPT)</h2>
+  <table>
+    <tr><th>#</th><th>Slide</th><th>Points</th></tr>
+    <tr><td>1</td><td>Title</td><td>UPI Scam Shield — Hybrid detection</td></tr>
+    <tr><td>2</td><td>Problem</td><td>Scams, losses, triage need</td></tr>
+    <tr><td>3</td><td>Solution</td><td>Text + OCR, risk + verdict + explain</td></tr>
+    <tr><td>4</td><td>Architecture</td><td>Diagram + rules vs LLM + DB</td></tr>
+    <tr><td>5</td><td>Innovation</td><td>Hybrid, India patterns, feedback loop</td></tr>
+    <tr><td>6</td><td>Demo</td><td>Safe vs scam messages, image, learning demo</td></tr>
+    <tr><td>7</td><td>Tech &amp; next</td><td>FastAPI, Tesseract, OpenRouter, SQLite</td></tr>
+  </table>
+
+  <h2>10. Run (reference)</h2>
+  <pre>cd backend
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload</pre>
+  <p class="muted">UI: http://127.0.0.1:8000/ — Analyzer: /analyzer</p>
+
+  <p class="muted" style="margin-top:2rem;">Aligned with README.md and current codebase. Markdown twin: docs/PROJECT_FULL_BRIEF.md</p>
+
+</body>
+</html>
