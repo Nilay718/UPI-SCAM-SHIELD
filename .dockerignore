@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# Python
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+backend/.venv
+backend/.env
+*.egg-info
+
+# Local DB (use volume in Docker; don't bake into image)
+backend/feedback.sqlite3
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Docs / misc (optional — remove lines if you want them in image)
+# docs/

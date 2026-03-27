@@ -1,0 +1,21 @@
+# Local / server: docker compose up --build
+# UI: http://localhost:8000/  Analyzer: http://localhost:8000/health
+#
+# Optional API key: copy .env.example → .env in THIS folder (repo root) and set OPENROUTER_API_KEY.
+# Compose injects vars from .env automatically.
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      FEEDBACK_DB_PATH: /data/feedback.sqlite3
+      CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS:-http://localhost:8000,http://127.0.0.1:8000}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODELS: ${OPENROUTER_MODELS:-google/gemini-2.0-flash-lite,openai/gpt-4o-mini}
+    volumes:
+      - feedback_data:/data
+
+volumes:
+  feedback_data:
