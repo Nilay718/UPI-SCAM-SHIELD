@@ -5,7 +5,7 @@ Hybrid scam detection for UPI/payment-related scams from **text messages** and *
 - **Rule-based detection** (fast, deterministic, explainable)
 - **AI-based detection** (OpenRouter LLM; optional with graceful fallback)
 
-## Hackathon Pitch (ET GenAI – Phase 2 Prototype)
+## Project Overview
 
 UPI Scam Shield helps reduce **UPI scam losses** by giving users (and support teams) a fast, explainable **risk score**, **scam verdict**, and **next actions** from either:
 
@@ -36,7 +36,7 @@ User Input (Text/Image)
 → Explanation Agent  
 → Final Output (risk + reasons + actions)
 
-### Architecture diagram (for judges)
+### Architecture diagram (for reviewers)
 
 ```text
                  ┌───────────────────────────┐
@@ -73,7 +73,7 @@ Text / Screenshot│        Frontend UI        │
 - `backend/` FastAPI API + pipeline
 - `frontend/` static UI (dark theme)
 - `docs/` **Full project brief** (architecture, APIs, PPT outline): `docs/PROJECT_FULL_BRIEF.md` — open `docs/PROJECT_FULL_BRIEF.html` in browser → **Print → Save as PDF**
-- **Hackathon submission pack:** `docs/HACKATHON_SUBMISSION_CHECKLIST.md` · **Architecture (1–2 pages):** `docs/ARCHITECTURE_SUBMISSION.md` · **Impact model:** `docs/IMPACT_MODEL.md`
+- **Submission pack:** `docs/SUBMISSION_CHECKLIST.md` · **Architecture (1–2 pages):** `docs/ARCHITECTURE_SUBMISSION.md` · **Impact model:** `docs/IMPACT_MODEL.md`
 
 ## Requirements
 
@@ -221,7 +221,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-### One-command demo run (recommended for judges)
+### One-command demo run (recommended)
 
 ```powershell
 .\run_demo.ps1

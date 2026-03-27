@@ -1,5 +1,5 @@
 # Impact Model — UPI Scam Shield  
-*(Hackathon: quantified estimate — assumptions stated; back-of-envelope math)*
+*(Quantified estimate — assumptions stated; back-of-envelope math)*
 
 ## 1. Problem scale (context)
 
@@ -69,7 +69,7 @@ We do **not** claim to stop all fraud—only to **reduce** incidents where a qui
 
 ---
 
-## 6. Limitations (honesty for judges)
+## 6. Limitations
 
 - Field **precision/recall** depends on message mix and adversarial evolution of scams.
 - **Screenshot OCR** quality varies; Hindi support depends on Tesseract language packs.

@@ -7,7 +7,7 @@
 
 **UPI Scam Shield** is a **hybrid AI + rule-based** system that detects **UPI/payment scams** from **text** or **screenshots (OCR)**, returns **risk level**, **scam verdict**, **explainable reasons**, and **actionable steps**—with optional **LLM enrichment** and **adaptive learning** from user feedback (SQLite).
 
-**Target context:** Hackathon / enterprise demo (e.g. ET GenAI Phase 2 style)—consumer safety + support triage.
+**Target context:** product demo / enterprise pilot—consumer safety + support triage.
 
 ---
 

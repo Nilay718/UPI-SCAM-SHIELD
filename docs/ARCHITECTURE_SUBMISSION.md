@@ -1,5 +1,5 @@
 # Architecture Document — UPI Scam Shield  
-*(Hackathon: ~1–2 pages — agent roles, communication, tools, error handling)*
+*(~1–2 pages — agent roles, communication, tools, error handling)*
 
 ## 1. System overview
 
