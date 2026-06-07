@@ -11,7 +11,7 @@ services:
       - key: FEEDBACK_DB_PATH
         value: /app/feedback.sqlite3
       - key: CORS_ALLOW_ORIGINS
-        value: http://localhost:8000
+        value: https://upi-scam-shield.onrender.com,http://localhost:8000
       - key: OPENROUTER_API_KEY
         sync: false  # Render will prompt you to enter this manually (optional)
       - key: OPENROUTER_MODELS

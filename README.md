@@ -1,5 +1,9 @@
 # UPI Scam Shield – AI-Powered Fraud Detection System
 
+> **🔗 Live Demo:** [https://upi-scam-shield.onrender.com](https://upi-scam-shield.onrender.com)  
+> **📊 Analyzer:** [https://upi-scam-shield.onrender.com/analyzer](https://upi-scam-shield.onrender.com/analyzer)  
+> *(Free tier — first load may take ~50 seconds)*
+
 Hybrid scam detection for UPI/payment-related scams from **text messages** and **screenshots** (OCR), combining:
 
 - **Rule-based detection** (fast, deterministic, explainable)
@@ -111,6 +115,8 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Open the UI at: `http://localhost:8000/`
+
+> **Or try the live deployment:** [https://upi-scam-shield.onrender.com](https://upi-scam-shield.onrender.com)
 
 ## Docker (recommended for deploy & demos)
 
