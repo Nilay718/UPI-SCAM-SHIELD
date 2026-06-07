@@ -1,0 +1,19 @@
+# Render Blueprint — auto-configures the service when you connect this repo.
+# Docs: https://docs.render.com/blueprint-spec
+
+services:
+  - type: web
+    name: upi-scam-shield
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: FEEDBACK_DB_PATH
+        value: /app/feedback.sqlite3
+      - key: CORS_ALLOW_ORIGINS
+        value: http://localhost:8000
+      - key: OPENROUTER_API_KEY
+        sync: false  # Render will prompt you to enter this manually (optional)
+      - key: OPENROUTER_MODELS
+        value: google/gemini-2.0-flash-lite,openai/gpt-4o-mini
+    healthCheckPath: /health
